@@ -1,0 +1,35 @@
+h1.text-2xl.font-bold.text-gray-800.mb-6.text-center File Manager - Sorta
+
+.container.mx-auto.px-6
+  .flex.flex-col.items-center.grid-text-center
+    = form_with url: file_records_path, method: :get, local: true, class: "mb-6 w-full max-w-xl" do |f|
+      .mb-3
+        = f.label :query, "Search Files", class: "block font-semibold"
+        = f.text_field :query, value: params[:query], class: "w-full p-1 border rounded" 
+        = f.submit "Search", class: "mt-2 px-4 py-2 bg-blue-500 text-black rounded"
+
+    = form_with model: FileRecord.new, local: true, html: { multipart: true }, class: "mb-6 w-full max-w-xl" do |f|
+      .mb-3
+        = f.label :file, "Upload File", class: "block font-semibold"
+        = f.file_field :file, class: "w-full p-1 border rounded"
+        = f.submit "Upload", class: "mt-2 px-4 py-2 bg-green-500 text-black rounded"
+
+    - if @file_records.any?
+      table.mt-6.border.w-full.max-w-2xl  
+        thead.bg-gray-100
+          tr
+            th.p-2.text-left File Name
+            th.p-2.text-left Uploaded At
+            th.p-2.text-left Actions
+        tbody
+          - @file_records.each do |record|
+            tr.border-t
+              td.p-2 = record.filename
+              td.p-2 = record.created_at.strftime("%b %d, %Y %I:%M %p")
+              td.p-2
+                .flex.gap-4
+                  = link_to "Download", rails_blob_path(record.file, disposition: "attachment"), class: "text-blue-600 underline text-sm"
+                  = button_to "Delete", file_record_path(record), method: :delete, data: { confirm: "Are you sure?" }, class: "text-sm text-red-600"
+
+    - else
+      p.mt-4.text-gray-500 No files uploaded yet.
