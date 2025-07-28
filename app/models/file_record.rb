@@ -3,14 +3,8 @@ class FileRecord < ApplicationRecord
   validates :file, presence: true 
   before_save :set_filename
 
-  scope :search, ->(query) {
-    where("filename ILIKE ?", "%#{query}%") if query.present?
+  scope :sorted_by_created_at, ->(direction = "desc") {
+    order(created_at: direction)
   }
-
-  private
-
-  def set_filename
-    self.filename = file.filename.to_s if file.attached?
-  end
 
 end
