@@ -1,24 +1,27 @@
 .container.pt-12.text-center
   h1.text-2xl.font-bold.text-gray-800.text-center Sorta
 
-.container.text-center
-  .row.row-cols-2
-    .col
-      = form_with model: FileRecord.new, local: false, html: { multipart: true, id: "upload-form" }, class: "mb-6 w-full max-w-xl" do |f|
+  .grid.grid-cols-5.gap-4
+    .col-span-1
+      .bg-gray-100.p-4.rounded.shadow
+        ul.space-y-2
+          - @months.each do |month, month_num|
+            li
+              = link_to month,
+                file_records_path(sort: params[:sort], query: params[:query], month: month_num),
+                data: { turbo_frame: "file_records" },
+                class: "block px-2 py-1 rounded hover:bg-blue-100 #{'bg-blue-200 font-bold' if params[:month].to_i == month_num}"
+
+    .col-span-4
+      = form_with model: FileRecord.new, local: false, data: { controller: "auto-submit" }, class: "max-w-xl mx-auto" do |f|
         .mb-3
-          = f.label :file, "Upload File", class: "block font-semibold"
-          = f.file_field :file, class: "w-full p-1 border rounded", data: {controller: "auto-upload"}
-    .col
-      .mb-3
-        = form_with url: file_records_path, method: :get, local: false, data: { turbo_frame: "file_records", controller: "auto-submit" }, class: "max-w-xl mx-auto flex gap-2" do |f|
-          = f.label :sort, "Sort by", class: "block font-semibold"
-          = f.select :sort, options_for_select([["Newest", "desc"], ["Oldest", "asc"]], params[:sort]), {}, data: { action: "change->auto-submit#submit" }, class: "p-1 border rounded"
+          = f.label :filename, "File Name", class: "block font-semibold"
+          = f.text_field :filename, class: "w-full p-1 border rounded", autofocus: true
+        = f.submit "Submit", class: "mt-2 px-4 py-2 bg-blue-500 text-black rounded"
 
-  /   .col
-  /     = form_with url: file_records_path, method: :get, local: true, class: "mb-6 w-full max-w-xl" do |f|
-  /       .mb-3
-  /         = f.label :query, "Search Files", class: "block font-semibold"
-  /         = f.text_field :query, value: params[:query], class: "w-full p-1 border rounded"
-  /         = f.submit "Search", class: "mt-2 px-4 py-2 bg-blue-500 text-black rounded"
+      = form_with url: file_records_path, method: :get, local: false, data: { turbo_frame: "file_records", controller: "auto-submit" }, class: "max-w-xl mx-auto flex gap-2" do |f|
+        = f.label :sort, "Sort by", class: "block font-semibold"
+        = f.select :sort, options_for_select([["Newest", "desc"], ["Oldest", "asc"]], params[:sort]), {}, data: { action: "change->auto-submit#submit" }, class: "p-1 border rounded"
 
-= render "table"
+= turbo_frame_tag "file_records" do
+  = render "table"
