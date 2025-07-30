@@ -1,27 +1,55 @@
-.container.pt-12.text-center
-  h1.text-2xl.font-bold.text-gray-800.text-center Sorta
-
-  .grid.grid-cols-5.gap-4
-    .col-span-1
-      .bg-gray-100.p-4.rounded.shadow
-        ul.space-y-2
+.container-fluid
+  .row
+    / Sidebar first
+    .col-md-2.sidebar.d-flex.flex-column.align-items-start
+      .text-center.w-100.mb-4
+        h1.mb-3.pacifico Sorta 
+        .nav.flex-column.w-100
           - @months.each do |month, month_num|
-            li
-              = link_to month,
-                file_records_path(sort: params[:sort], query: params[:query], month: month_num),
-                data: { turbo_frame: "file_records" },
-                class: "block px-2 py-1 rounded hover:bg-blue-100 #{'bg-blue-200 font-bold' if params[:month].to_i == month_num}"
+            = link_to month,
+              file_records_path(sort: params[:sort], query: params[:query], month: month_num),
+              data: { turbo_frame: "file_records" },
+              class: "nav-link #{'active' if params[:month].to_i == month_num}"
 
-    .col-span-4
-      = form_with model: FileRecord.new, local: false, data: { controller: "auto-submit" }, class: "max-w-xl mx-auto" do |f|
-        .mb-3
-          = f.label :filename, "File Name", class: "block font-semibold"
-          = f.text_field :filename, class: "w-full p-1 border rounded", autofocus: true
-        = f.submit "Submit", class: "mt-2 px-4 py-2 bg-blue-500 text-black rounded"
+    / Main content
+    .col-md-10
+      .search-bar.d-flex.justify-content-between.align-items-center.mb-33
+        input.form-control.w-50 type="text" placeholder="Search Here"
+        .profile
+          span
+            | John Doe
+            br
+            small Admin
+          i.fas.fa-user-circle.fa-2x.ms-2
 
-      = form_with url: file_records_path, method: :get, local: false, data: { turbo_frame: "file_records", controller: "auto-submit" }, class: "max-w-xl mx-auto flex gap-2" do |f|
-        = f.label :sort, "Sort by", class: "block font-semibold"
-        = f.select :sort, options_for_select([["Newest", "desc"], ["Oldest", "asc"]], params[:sort]), {}, data: { action: "change->auto-submit#submit" }, class: "p-1 border rounded"
+      = turbo_frame_tag "file_records" do
+        = render "table"
 
-= turbo_frame_tag "file_records" do
-  = render "table"
+        = form_with model: FileRecord.new, local: false, data: { controller: "auto-submit" }, class: "max-w-xl mx-auto" do |f|
+          .table-controls.d-flex.justify-content-between.align-items-center.mt-3
+            .button.btn.btn-add
+              = f.submit "ADD NEW FILE", class: "btn text-white"
+          
+            nav
+              ul.pagination.mb-0
+                li.page-item
+                  a.page-link href="#"
+                    i.bi.bi-arrow-left-circle
+                li.page-item.active
+                  a.page-link href="#" 1
+                li.page-item
+                  a.page-link href="#" 2
+                li.page-item
+                  a.page-link href="#"
+                    i.bi.bi-arrow-right-circle
+
+  /   .col-span-4
+  /     = form_with model: FileRecord.new, local: false, data: { controller: "auto-submit" }, class: "max-w-xl mx-auto" do |f|
+  /       .mb-3
+  /         = f.label :filename, "File Name", class: "block font-semibold"
+  /         = f.text_field :filename, class: "w-full p-1 border rounded", autofocus: true
+  /       = f.submit "Submit", class: "mt-2 px-4 py-2 bg-blue-500 text-black rounded"
+
+  /     = form_with url: file_records_path, method: :get, local: false, data: { turbo_frame: "file_records", controller: "auto-submit" }, class: "max-w-xl mx-auto flex gap-2" do |f|
+  /       = f.label :sort, "Sort by", class: "block font-semibold"
+  /       = f.select :sort, options_for_select([["Newest", "desc"], ["Oldest", "asc"]], params[:sort]), {}, data: { action: "change->auto-submit#submit" }, class: "p-1 border rounded"

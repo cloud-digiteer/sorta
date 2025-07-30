@@ -5,7 +5,7 @@ class FileRecordsController < ApplicationController
     @query = params[:query]
     @sort_order = params[:sort].presence || "desc"
     @file_records = FileRecord.sorted_by_created_at(@sort_order)
-    @months = Date::MONTHNAMES.compact.each_with_index.map { |month, i| [month, i + 1] }
+    @months = Date::MONTHNAMES.compact
 
     respond_to do |format|
       format.html
