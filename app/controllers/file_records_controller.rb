@@ -17,13 +17,6 @@ class FileRecordsController < ApplicationController
     end
   end
 
-  def new
-    @file_record = FileRecord.new
-    respond_to do |format|
-      format.turbo_stream
-    end
-  end
-
   def create
     @file_record = FileRecord.new(file_record_params)
     @file_record.status = "for_signed"

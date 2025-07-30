@@ -26,7 +26,8 @@
         = render "table"
 
       .table-controls.d-flex.justify-content-between.align-items-center.mt-3
-        = link_to "ADD NEW FILE", new_file_record_path(format: :turbo_stream), data: { turbo_frame: "_top" }, class: "btn btn-add text-white"
+        button.btn.btn-add.text-white type="button" data-controller="add-modal" data-action="click->add-modal#open"
+          | ADD NEW FILE
 
         nav
           ul.pagination.mb-0
@@ -41,10 +42,8 @@
               a.page-link href="#"
                 i.bi.bi-arrow-right-circle
       
-      = turbo_frame_tag "formStream"
-      = turbo_frame_tag "turboStreamJs"
-
-
+      = render "filemodal", data: {add_modal_target: "modal"}
+      
   /   .col-span-4
   /     = form_with model: FileRecord.new, local: false, data: { controller: "auto-submit" }, class: "max-w-xl mx-auto" do |f|
   /       .mb-3

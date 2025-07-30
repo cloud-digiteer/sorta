@@ -1,12 +1,12 @@
-#addFileModal.modal.fade tabindex="-1" aria-labelledby="addFileModalLabel" aria-hidden="true"
+.modal.fade#addFileModal tabindex="-1" aria-labelledby="addFileModalLabel" aria-hidden="true"
   .modal-dialog
     .modal-content
       .modal-header
-        h5.modal-title#addFileModalLabel Add Filename
+        h5.modal-title#addFileModalLabel Add New Filename
         button.btn-close type="button" data-bs-dismiss="modal" aria-label="Close"
       .modal-body
         = form_with model: @file_record, url: file_records_path, method: :post, data: { turbo_frame: "file_records" } do |f|
           .mb-3
             = f.label :filename
             = f.text_field :filename, class: "form-control"
-          = f.submit "Save", class: "btn btn-primary"
+          = f.submit "Save", class: "btn btn-add text-white"
