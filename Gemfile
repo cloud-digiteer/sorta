@@ -67,3 +67,4 @@ group :test do
 end
 
 gem "slim-rails", "~> 3.7"
+gem 'devise'

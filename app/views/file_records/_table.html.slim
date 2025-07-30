@@ -3,13 +3,13 @@
     table.table.table-hover
       thead
         tr
-        .d-flex.align-items-center
           th.p-2.text-left File Name
           th.p-2.text-left Uploaded At
           th.p-2.text-left Status
           th.p-2.text-left Actions
       tbody.table-group-divider
         - @file_records.each do |record|
+          tr
             td.p-2 = record.filename
             td.p-2 = record.created_at.strftime("%b %d, %Y %I:%M %p")
             td.p-2
@@ -25,7 +25,6 @@
             td.p-2
               .flex.gap-4
                 = button_to "", file_record_path(record), method: :delete, data: { confirm: "Are you sure?" }, class: "bi bi-trash-fill trash-icon btn"
-
 
 - else
   p.mt-4.text-gray-500 No filenames uploaded yet.

@@ -1,0 +1,13 @@
+<%= turbo_stream.update "formStream" do %>
+  <%= render "filemodal" %>
+<% end %>
+
+<%= turbo_stream.update "turboStreamJs" do %>
+  <script>
+    const modalEl = document.querySelector('#addFileModal')
+    if (modalEl){
+      const modal = new bootstrap.Modal(modalEl, {keyboard: false})
+      modal.show()
+    }
+  </script>
+<% end %>
