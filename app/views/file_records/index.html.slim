@@ -22,11 +22,12 @@
             small Admin
           i.fas.fa-user-circle.fa-2x.ms-2
 
-      = turbo_frame_tag "file_records" do
-        = render "table"
+
+      = render "file_records/table", file_records: @file_records
+
 
       .table-controls.d-flex.justify-content-between.align-items-center.mt-3
-        button.btn.btn-add.text-white type="button" data-controller="add-modal" data-action="click->add-modal#open"
+        button.btn.btn-add.text-white type="button" data-bs-toggle="modal" data-bs-target="#addFileModal"
           | ADD NEW FILE
 
         nav
@@ -42,7 +43,7 @@
               a.page-link href="#"
                 i.bi.bi-arrow-right-circle
       
-      = render "filemodal", data: {add_modal_target: "modal"}
+      = render "filemodal"
       
   /   .col-span-4
   /     = form_with model: FileRecord.new, local: false, data: { controller: "auto-submit" }, class: "max-w-xl mx-auto" do |f|

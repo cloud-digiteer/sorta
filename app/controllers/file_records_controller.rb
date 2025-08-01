@@ -22,28 +22,43 @@ class FileRecordsController < ApplicationController
     @file_record.status = "for_signed"
 
     if @file_record.save
+      puts "=== SUBMIT SUCCESS ==="
       @file_records = FileRecord.sorted_by_created_at("desc")
+
       respond_to do |format|
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace(
-            "file_records",
-            partial: "file_records/table",
-            locals: { file_records: @file_records }
-          )
+          render turbo_stream: [
+            turbo_stream.replace(
+              "file_records",
+              partial: "file_records/table",
+              locals: { file_records: @file_records }
+            ),
+            turbo_stream.replace(
+              "new_file_form",
+              partial: "file_records/form",
+              locals: { file_record: FileRecord.new }
+            )
+          ]
         end
-        format.html { redirect_to file_records_path, notice: "File added successfully." }
       end
     else
-      puts "================ERROR=================="
-      puts @file_record.errors.full_messages.join(", ")
+      puts "===================== FILENAME CREATION ERROR ======================="
     end
   end
 
   def destroy
     @file_record = FileRecord.find(params[:id])
     @file_record.destroy
-    redirect_to file_records_path, notice: "File deleted successfully."
+
+    respond_to do |format|
+      format.turbo_stream do
+        @file_records = FileRecord.all.order(created_at: :desc) 
+        render turbo_stream: turbo_stream.replace("file_records", partial: "file_records/table", locals: { file_records: @file_records })
+      end
+      format.html { redirect_to file_records_path, notice: "File deleted." }
+    end
   end
+
 
   private
 

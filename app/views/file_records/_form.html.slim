@@ -1,0 +1,6 @@
+= turbo_frame_tag "new_file_form" do
+  = form_with model: file_record, url: file_records_path, method: :post, data: { turbo_frame: "_top", controller: "add-modal", action: "turbo:submit-end->add-modal#handleSubmit" } do |f|
+    .mb-3
+      = f.label :filename
+      = f.text_field :filename, class: "form-control"
+    = f.submit "Save", class: "btn btn-add text-white"
