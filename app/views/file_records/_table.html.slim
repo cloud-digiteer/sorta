@@ -22,6 +22,10 @@
                 - else
                   = record.status
               td
-                = button_to "", file_record_path(record), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "bi bi-trash-fill trash-icon btn"
+                .d-flex.gap-2.align-items-center
+                  = button_to file_record_path(record), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "btn p-0 border-0 bg-transparent text-danger", title: "Delete" do
+                    i class="bi bi-trash-fill"
+                  = button_to toggle_status_file_record_path(record), method: :patch, form: { data: { turbo_frame: "file_records" } }, class: "btn p-0 border-0 bg-transparent ", title: "Toggle Status" do
+                    i class="bi bi-check"
   - else
     p No files found.
