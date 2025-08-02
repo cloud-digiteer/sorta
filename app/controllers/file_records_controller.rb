@@ -3,8 +3,9 @@ class FileRecordsController < ApplicationController
   def index
     @query = params[:query]
     @sort_order = params[:sort].presence || "desc"
-    @file_records = FileRecord.search_by_filename(@query).sorted_by_created_at(@sort_order)
-    @months = Date::MONTHNAMES.compact
+    @month = params[:month].to_i
+    @file_records = FileRecord.search_by_filename(@query).by_month(@month).sorted_by_created_at(@sort_order)
+    @months = Date::MONTHNAMES.compact.each_with_index.map { |m, i| [m, i + 1] }
 
     respond_to do |format|
       format.html
