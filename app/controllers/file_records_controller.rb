@@ -1,4 +1,5 @@
 class FileRecordsController < ApplicationController
+  before_action :authenticate_user!
 
   def index
     @query = params[:query]
@@ -85,6 +86,6 @@ class FileRecordsController < ApplicationController
 
   def load_file_records
     @file_records = FileRecord.sorted_by_created_at("desc")
-  end
+  end 
 
 end

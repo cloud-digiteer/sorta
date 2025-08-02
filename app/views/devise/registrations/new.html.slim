@@ -1,0 +1,31 @@
+- content_for :stylesheets
+  = stylesheet_link_tag "login", media: "all"
+
+.container.d-flex.justify-content-center.align-items-center.vh-100
+  .card.shadow.card-login
+    h1.text-center.mb-4.pacifico.sorta-logo Sorta
+    h4.text-start.mb-3.text-login Sign Up
+
+    = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { data: {turbo: false}}) do |f|
+      = render "devise/shared/error_messages", resource: resource
+
+      .mb-3
+        = f.label :email, "Email", class: "form-text-label"
+        = f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "Enter your email"
+
+      .mb-3
+        = f.label :password, "Password", class: "form-text-label"
+        - if @minimum_password_length
+          em.small.text-muted | (#{@minimum_password_length} characters minimum)
+        = f.password_field :password, autocomplete: "new-password", class: "form-control", placeholder: "Create a password"
+
+
+      .mb-3
+        = f.label :password_confirmation, "Confirm Password", class: "form-text-label"
+        = f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control", placeholder: "Repeat your password"
+
+      .mb-3
+        = f.submit "Sign up", class: "btn btn-primary w-100 login-btn"
+
+      .mt-3.text-center
+        = link_to "Back to Login", new_session_path(resource_name), class: "btn btn-secondary w-100"

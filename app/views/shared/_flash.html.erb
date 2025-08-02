@@ -1,0 +1,12 @@
+<% flash.each do |key, message| %>
+  <% alert_class =
+    case key
+    when "notice" then "alert alert-success"
+    when "alert"  then "alert alert-danger"
+    else "alert alert-info"
+    end
+  %>
+  <div class="<%= alert_class %> mt-3" role="alert">
+    <%= message %>
+  </div>
+<% end %>

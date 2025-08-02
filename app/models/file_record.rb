@@ -4,7 +4,7 @@ class FileRecord < ApplicationRecord
   }
 
   scope :sorted_by_created_at, ->(direction = "desc") {
-    order(created_at: direction)
+    order(created_at: direction)  
   }
 
   scope :by_month, ->(month_number) {

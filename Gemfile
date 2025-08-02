@@ -69,3 +69,4 @@ end
 gem "slim-rails", "~> 3.7"
 gem 'devise'
 gem 'pg', '~> 1.4'
+gem 'googleauth'
