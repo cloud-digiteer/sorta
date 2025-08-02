@@ -15,15 +15,16 @@
     / Main content
     .col-md-10
       .search-bar.d-flex.justify-content-between.align-items-center.mb-33
-        = form_with url: file_records_path, method: :get, local: false, data: { turbo_frame: "file_records", controller: "search"} do |f|
+        = form_with url: file_records_path, method: :get, local: false, data: { turbo_frame: "file_records", controller: "search" } do |f|
           = f.text_field :query, placeholder: "Search Here", class: "form-control", style: "width: 400px;", value: params[:query], autocomplete: "off", id: "file_search_input", data: { action: "input->search#search", search_target: "input" }
-        .profile
-          span
-            / | John Doe
-            br
-            / small Admin
-        i.fas.fa-user-circle.fa-2x.ms-2
 
+        .d-flex.align-items-center.gap-3
+          .profile.d-flex.align-items-center.gap-2
+            .d-flex.flex-column.text-end
+            - if user_signed_in?
+              = button_to destroy_user_session_path, method: :delete, data: { turbo: false, confirm: "Are you sure you want to logout?" }, class: "btn btn-danger d-flex align-items-center gap-1" do
+                i.bi.bi-box-arrow-right
+                | Logout
 
 
       = render "file_records/table", file_records: @file_records
